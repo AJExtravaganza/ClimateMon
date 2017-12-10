@@ -13,7 +13,7 @@
   <property name="windowTitle">
    <string>Widget</string>
   </property>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
      <x>110</x>
@@ -22,9 +22,9 @@
      <height>33</height>
     </rect>
    </property>
-   <layout class="QHBoxLayout" name="horizontalLayout">
+   <layout class="QHBoxLayout" name="processValueColumnLabels">
     <item>
-     <widget class="QLabel" name="label_4">
+     <widget class="QLabel" name="temperature">
       <property name="font">
        <font>
         <family>Meiryo</family>
@@ -37,7 +37,7 @@
      </widget>
     </item>
     <item>
-     <widget class="QLabel" name="label_5">
+     <widget class="QLabel" name="humidity">
       <property name="font">
        <font>
         <family>Meiryo</family>
@@ -51,7 +51,7 @@
     </item>
    </layout>
   </widget>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
      <x>10</x>
@@ -60,11 +60,11 @@
      <height>113</height>
     </rect>
    </property>
-   <layout class="QVBoxLayout" name="verticalLayout">
+   <layout class="QVBoxLayout" name="processValueLayout">
     <item>
-     <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <layout class="QHBoxLayout" name="sat1Layout">
       <item>
-       <widget class="QLabel" name="label">
+       <widget class="QLabel" name="sat1Label">
         <property name="font">
          <font>
           <family>Meiryo</family>
@@ -91,10 +91,10 @@
          <enum>QLCDNumber::Flat</enum>
         </property>
         <property name="value" stdset="0">
-         <double>20.100000000000001</double>
+         <double>0.000000000000000</double>
         </property>
         <property name="intValue" stdset="0">
-         <number>20</number>
+         <number>0</number>
         </property>
        </widget>
       </item>
@@ -113,19 +113,22 @@
          <enum>QLCDNumber::Flat</enum>
         </property>
         <property name="value" stdset="0">
-         <double>20.100000000000001</double>
+         <double>0.000000000000000</double>
         </property>
         <property name="intValue" stdset="0">
-         <number>20</number>
+         <number>0</number>
         </property>
        </widget>
       </item>
      </layout>
     </item>
     <item>
-     <layout class="QHBoxLayout" name="horizontalLayout_3">
+     <layout class="QHBoxLayout" name="sat2Layout">
       <item>
-       <widget class="QLabel" name="label_3">
+       <widget class="QLabel" name="sat2Label">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
         <property name="font">
          <font>
           <family>Meiryo</family>
@@ -139,6 +142,9 @@
       </item>
       <item>
        <widget class="QLCDNumber" name="sat2Temperature">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
         <property name="smallDecimalPoint">
          <bool>true</bool>
         </property>
@@ -152,15 +158,18 @@
          <enum>QLCDNumber::Flat</enum>
         </property>
         <property name="value" stdset="0">
-         <double>20.100000000000001</double>
+         <double>0.000000000000000</double>
         </property>
         <property name="intValue" stdset="0">
-         <number>20</number>
+         <number>0</number>
         </property>
        </widget>
       </item>
       <item>
        <widget class="QLCDNumber" name="sat2Humidity">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
         <property name="smallDecimalPoint">
          <bool>true</bool>
         </property>
@@ -174,19 +183,22 @@
          <enum>QLCDNumber::Flat</enum>
         </property>
         <property name="value" stdset="0">
-         <double>20.100000000000001</double>
+         <double>0.000000000000000</double>
         </property>
         <property name="intValue" stdset="0">
-         <number>20</number>
+         <number>0</number>
         </property>
        </widget>
       </item>
      </layout>
     </item>
     <item>
-     <layout class="QHBoxLayout" name="horizontalLayout_4">
+     <layout class="QHBoxLayout" name="satLayout">
       <item>
-       <widget class="QLabel" name="label_2">
+       <widget class="QLabel" name="sat3Label">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
         <property name="font">
          <font>
           <family>Meiryo</family>
@@ -200,6 +212,9 @@
       </item>
       <item>
        <widget class="QLCDNumber" name="sat3Temperature">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
         <property name="smallDecimalPoint">
          <bool>true</bool>
         </property>
@@ -213,15 +228,18 @@
          <enum>QLCDNumber::Flat</enum>
         </property>
         <property name="value" stdset="0">
-         <double>20.100000000000001</double>
+         <double>0.000000000000000</double>
         </property>
         <property name="intValue" stdset="0">
-         <number>20</number>
+         <number>0</number>
         </property>
        </widget>
       </item>
       <item>
        <widget class="QLCDNumber" name="sat3Humidity">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
         <property name="smallDecimalPoint">
          <bool>true</bool>
         </property>
@@ -235,40 +253,14 @@
          <enum>QLCDNumber::Flat</enum>
         </property>
         <property name="value" stdset="0">
-         <double>20.100000000000001</double>
+         <double>0.000000000000000</double>
         </property>
         <property name="intValue" stdset="0">
-         <number>20</number>
+         <number>0</number>
         </property>
        </widget>
       </item>
      </layout>
-    </item>
-   </layout>
-  </widget>
-  <widget class="QWidget" name="">
-   <property name="geometry">
-    <rect>
-     <x>60</x>
-     <y>200</y>
-     <width>271</width>
-     <height>23</height>
-    </rect>
-   </property>
-   <layout class="QHBoxLayout" name="horizontalLayout_5">
-    <item>
-     <widget class="QSlider" name="horizontalSlider">
-      <property name="orientation">
-       <enum>Qt::Horizontal</enum>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QProgressBar" name="progressBar">
-      <property name="value">
-       <number>24</number>
-      </property>
-     </widget>
     </item>
    </layout>
   </widget>

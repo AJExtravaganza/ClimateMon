@@ -2,6 +2,7 @@
 #define WIDGET_H
 
 #include <QWidget>
+#include "arduinointerface.h"
 
 namespace Ui {
 class Widget;
@@ -14,6 +15,7 @@ class Widget : public QWidget
 public:
     explicit Widget(QWidget *parent = 0);
     ~Widget();
+    ArduinoInterface baseLink; //Maybe should be private
 
 private:
     Ui::Widget *ui;
