@@ -15,7 +15,7 @@ class Widget : public QWidget
 public:
     explicit Widget(QWidget *parent = 0);
     ~Widget();
-    ArduinoInterface baseLink; //Maybe should be private
+    ArduinoInterface baseDeviceInterface; //Maybe should be private
 
 private:
     Ui::Widget *ui;

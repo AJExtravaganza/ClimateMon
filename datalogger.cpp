@@ -1,13 +1,9 @@
 #include "datalogger.h"
 #include <QDate>
 #include <QTime>
+#include <QDebug>
 
 Datalogger::Datalogger() : datalog(nullptr) {
-
-}
-
-Datalogger::Datalogger(QFile* datalog) : datalog(datalog)
-{
 
 }
 
@@ -17,18 +13,20 @@ QString Datalogger::generateRecord(SatelliteDatum &datum) {
     QTime systemTime = QTime::currentTime();
 
     //Date field YYYYMMDD
-    record.append(systemDate.year());
+    record.append(QString::number(systemDate.year()));
     record.append((systemDate.month() < 10) ? "0" : "");
-    record.append(systemDate.month());
+    record.append(QString::number(systemDate.month()));
     record.append((systemDate.day() < 10) ? "0" : "");
-    record.append(systemDate.day());
+    record.append(QString::number(systemDate.day()));
     record.append(";");
 
-    //Time field hhmm
+    //Time field hhmmss
     record.append((systemTime.hour() < 10) ? "0" : "");
-    record.append(systemTime.hour());
+    record.append(QString::number(systemTime.hour()));
     record.append((systemTime.minute() < 10) ? "0" : "");
-    record.append(systemTime.minute());
+    record.append(QString::number(systemTime.minute()));
+    record.append((systemTime.second() < 10) ? "0" : "");
+    record.append(QString::number(systemTime.second()));
     record.append(";");
 
     //Temperature field °C
@@ -46,7 +44,14 @@ QString Datalogger::generateRecord(SatelliteDatum &datum) {
 
 }
 
+void Datalogger::setDatalog(QFile* datalog) {
+    Datalogger::datalog = datalog;
+    logStream.setDevice(datalog);
+}
+
 void Datalogger::log(SatelliteDatum &datum) {
 
     QString record = generateRecord(datum);
+    qDebug() << "Writing " << record << " to file.\n";
+    logStream << record;
 }

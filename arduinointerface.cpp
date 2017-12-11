@@ -4,6 +4,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <QDate>
+#include <QTime>
 #include "SerialPort.h"
 
 using std::cout;
@@ -11,7 +13,43 @@ using std::endl;
 
 ArduinoInterface::ArduinoInterface(): liveDevices({0,0,0,0,0,0})
 {
+    //Create a date/timestamp to avoid overwriting old logs
+    QDate systemDate = QDate::currentDate();
+    QTime systemTime = QTime::currentTime();
+    QString dateTimeStr = "";
 
+    //Append YYYYMMDD to date/timestamp
+    dateTimeStr.append(QString::number(systemDate.year()));
+    dateTimeStr.append((systemDate.month() < 10) ? "0" : "");
+    dateTimeStr.append(QString::number(systemDate.month()));
+    dateTimeStr.append((systemDate.day() < 10) ? "0" : "");
+    dateTimeStr.append(QString::number(systemDate.day()));
+    dateTimeStr.append(";");
+
+    //Append hhmmss to date/timestamp
+    dateTimeStr.append((systemTime.hour() < 10) ? "0" : "");
+    dateTimeStr.append(QString::number(systemTime.hour()));
+    dateTimeStr.append((systemTime.minute() < 10) ? "0" : "");
+    dateTimeStr.append(QString::number(systemTime.minute()));
+    dateTimeStr.append((systemTime.second() < 10) ? "0" : "");
+    dateTimeStr.append(QString::number(systemTime.second()));
+    dateTimeStr.append(";");
+
+    //Initialist the Datalogger and associated files for each device
+    for (int i = 1; i < DEVICECOUNT; i++) {
+
+       //Open a datalogging file
+       datalogs[i].setFileName((dateTimeStr + "_satellite_" + QString::number(i) + "_datalog.txt"));
+       if (!datalogs[i].open(QIODevice::WriteOnly | QIODevice::Append | QFile::Text)) {
+           //Do some error stuff
+           /*std::cerr << "Cannot open file for writing: "
+                     << qPrintable(file.errorString()) << std::endl;
+           */
+       }
+
+       //Set up an associated Datalogger
+       logger[i].setDatalog(&datalogs[i]);
+   }
 }
 
 void ArduinoInterface::run() {
@@ -105,11 +143,13 @@ void ArduinoInterface::update(QString datastring) {
     }
 
     if (validDatastring) {
+        //Update recorded values
         climateData[deviceID].temperature.setValue(temperature);
         climateData[deviceID].humidity.setValue(humidity);
         climateData[deviceID].lastUpdated = timestamp;
 
-        //Write to element of array of QFile pointers here.
+        //Write the new record to the associated .txt
+        logger[deviceID].log(climateData[deviceID]);
     }
 
 
