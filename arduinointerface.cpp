@@ -11,7 +11,7 @@
 using std::cout;
 using std::endl;
 
-ArduinoInterface::ArduinoInterface(): liveDevices({0,0,0,0,0,0})
+ArduinoInterface::ArduinoInterface(): HYSTERESIS(5), liveDevices({0,0,0,0,0,0})
 {
     //Create a date/timestamp to avoid overwriting old logs
     QDate systemDate = QDate::currentDate();
@@ -42,6 +42,7 @@ ArduinoInterface::ArduinoInterface(): liveDevices({0,0,0,0,0,0})
        datalogs[i].setFileName((dateTimeStr + "_satellite_" + QString::number(i) + "_datalog.txt"));
        if (!datalogs[i].open(QIODevice::WriteOnly | QIODevice::Append | QFile::Text)) {
            //Do some error stuff
+           qDebug() << "Error opening file for writing.\n";
            /*std::cerr << "Cannot open file for writing: "
                      << qPrintable(file.errorString()) << std::endl;
            */
@@ -82,6 +83,10 @@ void ArduinoInterface::run() {
         //wait a bit
         Sleep(10);
       }
+}
+
+void ArduinoInterface::parse(QString datastring) {
+    //Parse command words and do whatever
 }
 
 void ArduinoInterface::update(QString datastring) {
@@ -143,13 +148,15 @@ void ArduinoInterface::update(QString datastring) {
     }
 
     if (validDatastring) {
-        //Update recorded values
-        climateData[deviceID].temperature.setValue(temperature);
-        climateData[deviceID].humidity.setValue(humidity);
-        climateData[deviceID].lastUpdated = timestamp;
+        if (abs(temperature - climateData[deviceID].temperature.getValue()) > HYSTERESIS || abs(humidity - climateData[deviceID].humidity.getValue()) > HYSTERESIS) {
+            //Update recorded values
+            climateData[deviceID].temperature.setValue(temperature);
+            climateData[deviceID].humidity.setValue(humidity);
+            climateData[deviceID].lastUpdated = timestamp;
 
-        //Write the new record to the associated .txt
-        logger[deviceID].log(climateData[deviceID]);
+            //Write the new record to the associated .txt
+            logger[deviceID].log(climateData[deviceID]);
+        }
     }
 
 
