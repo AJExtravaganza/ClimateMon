@@ -12,6 +12,7 @@ private:
 public:
     explicit ProcessValue(QObject *parent = nullptr);
     int getValue();
+    QString getValueAsStr();
 
 signals:
     void valueChanged(int newValue);

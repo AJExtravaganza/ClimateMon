@@ -4,6 +4,8 @@
 #include <QObject>
 #include "processvalue.h"
 
+////DON'T BE SURPRISED IF THIS NEEDS THE BIG 3 CONSTRUCTORS AT SOME STAGE.  MAY BE TRUE FOR ALL QObjects
+
 class SatelliteDatum : public QObject //Figure out later whether this really needs to be a QObject
 {
     Q_OBJECT

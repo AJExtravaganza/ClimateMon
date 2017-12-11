@@ -108,6 +108,8 @@ void ArduinoInterface::update(QString datastring) {
         climateData[deviceID].temperature.setValue(temperature);
         climateData[deviceID].humidity.setValue(humidity);
         climateData[deviceID].lastUpdated = timestamp;
+
+        //Write to element of array of QFile pointers here.
     }
 
 
