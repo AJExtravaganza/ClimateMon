@@ -13,6 +13,10 @@ using std::endl;
 
 ArduinoInterface::ArduinoInterface(): HYSTERESIS(5), liveDevices({0,0,0,0,0,0})
 {
+
+}
+
+void ArduinoInterface::initialiseDatalogger(int deviceID) {
     //Create a date/timestamp to avoid overwriting old logs
     QDate systemDate = QDate::currentDate();
     QTime systemTime = QTime::currentTime();
@@ -35,22 +39,19 @@ ArduinoInterface::ArduinoInterface(): HYSTERESIS(5), liveDevices({0,0,0,0,0,0})
     dateTimeStr.append(QString::number(systemTime.second()));
     dateTimeStr.append(";");
 
-    //Initialist the Datalogger and associated files for each device
-    for (int i = 1; i < DEVICECOUNT; i++) {
-
-       //Open a datalogging file
-       datalogs[i].setFileName((dateTimeStr + "_satellite_" + QString::number(i) + "_datalog.txt"));
-       if (!datalogs[i].open(QIODevice::WriteOnly | QIODevice::Append | QFile::Text)) {
-           //Do some error stuff
-           qDebug() << "Error opening file for writing.\n";
-           /*std::cerr << "Cannot open file for writing: "
-                     << qPrintable(file.errorString()) << std::endl;
-           */
-       }
-
-       //Set up an associated Datalogger
-       logger[i].setDatalog(&datalogs[i]);
+    //Open a datalogging file
+   datalogs[deviceID].setFileName((dateTimeStr + "_satellite_" + QString::number(deviceID) + "_datalog.txt"));
+   if (!datalogs[deviceID].open(QIODevice::WriteOnly | QIODevice::Append | QFile::Text)) {
+       //Do some error stuff
+       qDebug() << "Error opening file for writing.\n";
+       /*std::cerr << "Cannot open file for writing: "
+                 << qPrintable(file.errorString()) << std::endl;
+       */
    }
+
+   //Set up an associated Datalogger
+   logger[deviceID].setDatalog(&datalogs[deviceID]);
+
 }
 
 void ArduinoInterface::run() {
@@ -148,6 +149,12 @@ void ArduinoInterface::update(QString datastring) {
     }
 
     if (validDatastring) {
+
+        //Check if file needs to be created
+        if (!logger[deviceID].isInitialised()) {
+            initialiseDatalogger(deviceID);
+        }
+
         if (abs(temperature - climateData[deviceID].temperature.getValue()) > HYSTERESIS || abs(humidity - climateData[deviceID].humidity.getValue()) > HYSTERESIS) {
             //Update recorded values
             climateData[deviceID].temperature.setValue(temperature);

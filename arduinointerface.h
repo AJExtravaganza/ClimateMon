@@ -13,6 +13,7 @@ class ArduinoInterface : public QThread
 private:
     const int HYSTERESIS; //In decidegC or deci%RH
     bool liveDevices[DEVICECOUNT]; //Curently unused
+    void initialiseDatalogger(int deviceID);
     void parse(QString datastring); //Call update(), and other types of xmit-related functions
     void update(QString datastring);
     Datalogger logger[DEVICECOUNT];

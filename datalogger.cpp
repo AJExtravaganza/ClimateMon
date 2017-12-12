@@ -44,6 +44,10 @@ QString Datalogger::generateRecord(SatelliteDatum &datum) {
 
 }
 
+bool Datalogger::isInitialised() {
+    return datalog;
+}
+
 void Datalogger::setDatalog(QFile* datalog) {
     Datalogger::datalog = datalog;
     logStream.setDevice(datalog);

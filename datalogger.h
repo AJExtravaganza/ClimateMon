@@ -15,6 +15,7 @@ private:
 public:
     Datalogger();
     //Datalogger(QFile* datalog);
+    bool isInitialised();
     void setDatalog(QFile* datalog);
     void log(SatelliteDatum &datum);
 };
