@@ -11,9 +11,11 @@
 using std::cout;
 using std::endl;
 
-ArduinoInterface::ArduinoInterface(): HYSTERESIS(5), liveDevices({0,0,0,0,0,0})
+ArduinoInterface::ArduinoInterface(): HYSTERESIS(5)
 {
-
+    for (int i = 1; i < DEVICECOUNT; i++) {
+        deviceStatus[i].setValue(true);
+    }
 }
 
 void ArduinoInterface::initialiseDatalogger(int deviceID) {
@@ -79,7 +81,7 @@ void ArduinoInterface::run() {
             if (bytes_read) {
                 dataString = static_cast<QString>(incomingData).left(bytes_read);
                 qDebug() << dataString;
-                update(dataString);
+                updateValues(dataString);
             }
         //wait a bit
         Sleep(10);
@@ -87,10 +89,22 @@ void ArduinoInterface::run() {
 }
 
 void ArduinoInterface::parse(QString datastring) {
-    //Parse command words and do whatever
+    QString txType = datastring.left(4); //Read three-letter tx code and semicolon
+    datastring.remove(0,4);
+    if (txType == "DAT;") {
+        updateValues(datastring);
+    }
+    else if (txType == "STS;") {
+        //QUICK AND DIRTY.  FIX WHEN NOT TIRED.
+        int deviceID = datastring.left(1).toInt();
+        datastring.remove(0,2);
+        bool status = (datastring.left(1) == "1") ? true : false;
+        deviceStatus[deviceID].setValue(status);
+        qDebug() << "changed the status\n";
+    }
 }
 
-void ArduinoInterface::update(QString datastring) {
+void ArduinoInterface::updateValues(QString datastring) {
     bool validDatastring = true;
     QString timestampStr = "";
     unsigned long int timestamp = 0;
