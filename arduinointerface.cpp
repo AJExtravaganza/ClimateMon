@@ -99,6 +99,7 @@ void ArduinoInterface::parse(QString datastring) {
             int deviceID = datastring.left(1).toInt();
             datastring.remove(0,2);
             bool status = (datastring.left(1) == "1") ? true : false;
+            qDebug() << "Setting device status to " << status << "\n";
             deviceStatus[deviceID].setValue(status);
         }
 
