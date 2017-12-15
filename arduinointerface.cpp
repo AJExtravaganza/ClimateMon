@@ -89,17 +89,26 @@ void ArduinoInterface::run() {
 }
 
 void ArduinoInterface::parse(QString datastring) {
-    QString txType = datastring.left(4); //Read three-letter tx code and semicolon
-    datastring.remove(0,4);
-    qDebug() << "txType is " << txType << '\n';
-    if (txType == "DAT;") {
-        updateValues(datastring);
-    }
-    else if (txType == "STS;") {
-        int deviceID = datastring.left(1).toInt();
-        datastring.remove(0,2);
-        bool status = (datastring.left(1) == "1") ? true : false;
-        deviceStatus[deviceID].setValue(status);
+    if (datastring.left(1) == ">" && datastring.mid(4,1) == ";") {
+        QString txType = datastring.mid(1,3); //Read three-letter tx code and semicolon
+        datastring.remove(0,5);
+        if (txType == "DAT") {
+            updateValues(datastring);
+        }
+        else if (txType == "STS") {
+            int deviceID = datastring.left(1).toInt();
+            datastring.remove(0,2);
+            bool status = (datastring.left(1) == "1") ? true : false;
+            deviceStatus[deviceID].setValue(status);
+        }
+
+        while (!datastring.isEmpty() && datastring.left(1) != ">") {
+            datastring.remove(0,1);
+        }
+
+        if (!datastring.isEmpty()) {
+            parse(datastring); // Recursive parse in case of backed-up transmissions.
+        }
     }
 }
 
