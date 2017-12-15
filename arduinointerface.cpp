@@ -81,7 +81,7 @@ void ArduinoInterface::run() {
             if (bytes_read) {
                 dataString = static_cast<QString>(incomingData).left(bytes_read);
                 qDebug() << dataString;
-                updateValues(dataString);
+                parse(dataString);
             }
         //wait a bit
         Sleep(10);
@@ -91,27 +91,27 @@ void ArduinoInterface::run() {
 void ArduinoInterface::parse(QString datastring) {
     QString txType = datastring.left(4); //Read three-letter tx code and semicolon
     datastring.remove(0,4);
+    qDebug() << "txType is " << txType << '\n';
     if (txType == "DAT;") {
         updateValues(datastring);
     }
     else if (txType == "STS;") {
-        //QUICK AND DIRTY.  FIX WHEN NOT TIRED.
         int deviceID = datastring.left(1).toInt();
         datastring.remove(0,2);
         bool status = (datastring.left(1) == "1") ? true : false;
         deviceStatus[deviceID].setValue(status);
-        qDebug() << "changed the status\n";
     }
 }
 
 void ArduinoInterface::updateValues(QString datastring) {
     bool validDatastring = true;
     QString timestampStr = "";
-    unsigned long int timestamp = 0;
+    unsigned long int secondsElapsed = 0;
     int deviceID = 0;
     int temperature = 0;
     int humidity = 0;
 
+    // Parse deviceID
     if (datastring.length() != 0) {
         deviceID = datastring.left(1).toInt();
         datastring.remove(0,1);
@@ -124,12 +124,13 @@ void ArduinoInterface::updateValues(QString datastring) {
         validDatastring = false;
     }
 
+    // Parse numeric secondsElapsed
     while (datastring.length() != 0 && !datastring.startsWith(";") /*change to ISNUMERIC*/) {
         timestampStr.append(datastring.left(1));
         datastring.remove(0,1);
     }
 
-    timestamp = static_cast<unsigned long int>(timestampStr.toInt());
+    secondsElapsed = static_cast<unsigned long int>(timestampStr.toInt());
 
     if (datastring.left(1) == ";") {
         datastring.remove(0,1);
@@ -138,6 +139,7 @@ void ArduinoInterface::updateValues(QString datastring) {
         validDatastring = false;
     }
 
+    // Parse temperature
     if (datastring.length() != 0) {
         temperature = datastring.left(3).toInt(); //Should always be 3 digits in practice
         datastring.remove(0,3);
@@ -150,6 +152,7 @@ void ArduinoInterface::updateValues(QString datastring) {
         validDatastring = false;
     }
 
+    // Parse humidity
     if (datastring.length() != 0) {
         humidity = datastring.left(3).toInt(); //Should always be 3 digits in practice
         datastring.remove(0,3);
@@ -162,6 +165,7 @@ void ArduinoInterface::updateValues(QString datastring) {
         validDatastring = false;
     }
 
+    // Perform update if datastring is valid
     if (validDatastring) {
 
         //Check if file needs to be created
@@ -173,7 +177,7 @@ void ArduinoInterface::updateValues(QString datastring) {
             //Update recorded values
             climateData[deviceID].temperature.setValue(temperature);
             climateData[deviceID].humidity.setValue(humidity);
-            climateData[deviceID].lastUpdated = timestamp;
+            climateData[deviceID].lastUpdated = secondsElapsed;
 
             //Write the new record to the associated .txt
             logger[deviceID].log(climateData[deviceID]);

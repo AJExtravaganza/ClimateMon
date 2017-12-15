@@ -15,7 +15,7 @@ Widget::Widget(QWidget *parent) :
     QObject::connect(&baseDeviceInterface.climateData[3].temperature, SIGNAL(valueChanged(QString)), ui->sat1Temperature, SLOT(display(QString)));
     QObject::connect(&baseDeviceInterface.climateData[3].humidity, SIGNAL(valueChanged(QString)), ui->sat3Humidity, SLOT(display(QString)));
 
-    QObject::connect(&baseDeviceInterface.deviceStatus[1], SIGNAL(valueChanged(QString)), ui->Sat1Status, SLOT(text(QString)));
+    QObject::connect(&baseDeviceInterface.deviceStatus[1], SIGNAL(valueChanged(QString)), ui->Sat1Status, SLOT(setText(QString)));
 }
 
 Widget::~Widget()

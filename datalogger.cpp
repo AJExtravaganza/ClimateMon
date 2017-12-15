@@ -29,6 +29,10 @@ QString Datalogger::generateRecord(SatelliteDatum &datum) {
     record.append(QString::number(systemTime.second()));
     record.append(";");
 
+    //SECONDS ELAPSED GOES HERE
+    record.append(QString::number(datum.lastUpdated));
+    record.append(";");
+
     //Temperature field °C
     record.append(datum.temperature.getValueAsStr());
     record.append(";");

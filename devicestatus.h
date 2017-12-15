@@ -7,8 +7,8 @@ class DeviceStatus : public QObject
 {
     Q_OBJECT
 private:
-    //int deviceID;
     bool value;
+    bool touched; // Has a valid status ever been received, or are we waiting for the first transmission?
 
 public:
     explicit DeviceStatus(QObject *parent = nullptr);
