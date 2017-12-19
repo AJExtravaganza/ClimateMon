@@ -195,6 +195,4 @@ void Satellite::updateValues(QString datastring) {
             logger[deviceID].log(climateData[deviceID]);
         }
     }
-
-
 }

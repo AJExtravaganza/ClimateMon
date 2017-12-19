@@ -1,7 +1,6 @@
 #ifndef SATELLITE_H
 #define SATELLITE_H
 
-
 class Satellite :
 {
 private:
