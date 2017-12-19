@@ -12,7 +12,8 @@ const int DEVICECOUNT = 6;
 class ArduinoInterface : public QThread
 {
 private:
-    const int HYSTERESIS; //In decidegC or deci%RH
+    const int TEMPHYSTERESIS; //In decidegC
+    const int HUMHYSTERESIS; //In deci%RH
     void initialiseDatalogger(int deviceID);
     void parse(QString datastring); //Call update(), and other types of xmit-related functions
     void updateValues(QString datastring);

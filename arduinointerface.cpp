@@ -11,7 +11,7 @@
 using std::cout;
 using std::endl;
 
-ArduinoInterface::ArduinoInterface(): HYSTERESIS(5)
+ArduinoInterface::ArduinoInterface(): TEMPHYSTERESIS(1), HUMHYSTERESIS(5)
 {
     for (int i = 1; i < DEVICECOUNT; i++) {
         deviceStatus[i].setValue(true);
@@ -183,7 +183,7 @@ void ArduinoInterface::updateValues(QString datastring) {
             initialiseDatalogger(deviceID);
         }
 
-        if (abs(temperature - climateData[deviceID].temperature.getValue()) > HYSTERESIS || abs(humidity - climateData[deviceID].humidity.getValue()) > HYSTERESIS) {
+        if (abs(temperature - climateData[deviceID].temperature.getValue()) > TEMPHYSTERESIS || abs(humidity - climateData[deviceID].humidity.getValue()) > HUMHYSTERESIS) {
             //Update recorded values
             climateData[deviceID].temperature.setValue(temperature);
             climateData[deviceID].humidity.setValue(humidity);
