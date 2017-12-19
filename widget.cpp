@@ -8,15 +8,17 @@ Widget::Widget(QWidget *parent) :
     ui->setupUi(this);
     baseDeviceInterface.start();
 
-    QObject::connect(&baseDeviceInterface.climateData[1].temperature, SIGNAL(valueChanged(QString)), ui->sat1Temperature, SLOT(display(QString)));
-    QObject::connect(&baseDeviceInterface.climateData[1].humidity, SIGNAL(valueChanged(QString)), ui->sat1Humidity, SLOT(display(QString)));
-    QObject::connect(&baseDeviceInterface.climateData[2].temperature, SIGNAL(valueChanged(QString)), ui->sat2Temperature, SLOT(display(QString)));
-    QObject::connect(&baseDeviceInterface.climateData[2].humidity, SIGNAL(valueChanged(QString)), ui->sat2Humidity, SLOT(display(QString)));
-    QObject::connect(&baseDeviceInterface.climateData[3].temperature, SIGNAL(valueChanged(QString)), ui->sat1Temperature, SLOT(display(QString)));
-    QObject::connect(&baseDeviceInterface.climateData[3].humidity, SIGNAL(valueChanged(QString)), ui->sat3Humidity, SLOT(display(QString)));
+    QObject::connect(&baseDeviceInterface.fieldDevice[1].climateData.temperature, SIGNAL(valueChanged(QString)), ui->sat1Temperature, SLOT(display(QString)));
+    QObject::connect(&baseDeviceInterface.fieldDevice[1].climateData.humidity, SIGNAL(valueChanged(QString)), ui->sat1Humidity, SLOT(display(QString)));
+    QObject::connect(&baseDeviceInterface.fieldDevice[2].climateData.temperature, SIGNAL(valueChanged(QString)), ui->sat2Temperature, SLOT(display(QString)));
+    QObject::connect(&baseDeviceInterface.fieldDevice[2].climateData.humidity, SIGNAL(valueChanged(QString)), ui->sat2Humidity, SLOT(display(QString)));
+    QObject::connect(&baseDeviceInterface.fieldDevice[3].climateData.temperature, SIGNAL(valueChanged(QString)), ui->sat1Temperature, SLOT(display(QString)));
+    QObject::connect(&baseDeviceInterface.fieldDevice[3].climateData.humidity, SIGNAL(valueChanged(QString)), ui->sat3Humidity, SLOT(display(QString)));
 
-    QObject::connect(&baseDeviceInterface.deviceStatus[1], SIGNAL(valueChanged(QString)), ui->Sat1Status, SLOT(setText(QString)));
-}
+    QObject::connect(&baseDeviceInterface.fieldDevice[1].deviceStatus, SIGNAL(valueChanged(QString)), ui->SatStatus_1, SLOT(setText(QString)));
+    QObject::connect(&baseDeviceInterface.fieldDevice[2].deviceStatus, SIGNAL(valueChanged(QString)), ui->SatStatus_2, SLOT(setText(QString)));
+    QObject::connect(&baseDeviceInterface.fieldDevice[3].deviceStatus, SIGNAL(valueChanged(QString)), ui->SatStatus_3, SLOT(setText(QString)));
+   }
 
 Widget::~Widget()
 {

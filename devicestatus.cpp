@@ -17,3 +17,4 @@ void DeviceStatus::setValue(bool value) {
     //touched = true;
 }
 
+//// SHOULD USE PREPROCESSORS TO ALLOW EASY EDITING OF TEXT LABEL
