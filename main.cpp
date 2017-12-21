@@ -4,13 +4,25 @@
 #include <QTime>
 #include "arduinointerface.h"
 #include "widget.h"
+#include <QSound>
+#include <QDir>
+#include <QDebug>
+
 
 int main(int argc, char *argv[])
 {
+
     QApplication a(argc, argv);
-    Widget w;
+    CliMonWindow w;
     w.show();
 
+    //w.baseDeviceInterface.alarmTone.play();
+
+//    QDir alarmSoundFile("alarmshort.wav");
+//    qDebug() << alarmSoundFile.exists() << 'n';
+//    qDebug() << alarmSoundFile.absolutePath() << 'n';
+//    QSound effect(alarmSoundFile.absolutePath());
+//    effect.play();
 
     return a.exec();
 }

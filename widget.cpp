@@ -1,11 +1,13 @@
 #include "widget.h"
 #include "ui_widget.h"
+#include <QDebug>
 
-Widget::Widget(QWidget *parent) :
+CliMonWindow::CliMonWindow(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::Widget)
 {
     ui->setupUi(this);
+
     baseDeviceInterface.start();
 
     QObject::connect(&baseDeviceInterface.fieldDevice[1].climateData.temperature, SIGNAL(valueChanged(QString)), ui->sat1Temperature, SLOT(display(QString)));
@@ -20,7 +22,7 @@ Widget::Widget(QWidget *parent) :
     QObject::connect(&baseDeviceInterface.fieldDevice[3].deviceStatus, SIGNAL(valueChanged(QString)), ui->SatStatus_3, SLOT(setText(QString)));
    }
 
-Widget::~Widget()
+CliMonWindow::~CliMonWindow()
 {
     baseDeviceInterface.quit(); //It is necessary to quit the background thread before terminating the application.
     if(!baseDeviceInterface.wait(3000)) //Wait until it actually has terminated (max. 3 sec)

@@ -11,51 +11,19 @@
 using std::cout;
 using std::endl;
 
-ArduinoInterface::ArduinoInterface()
+ArduinoInterface::ArduinoInterface() : alarmToneFile("alarmshort.wav"), alarmTone(alarmToneFile.absolutePath())
 {
     for (int i = 1; i < DEVICECOUNT; i++) {
         fieldDevice[i].setDeviceID(i);
         fieldDevice[i].deviceStatus.setValue(true);
     }
+
+//    QDir alarmSoundFile("alarmshort.wav");
+//    qDebug() << alarmSoundFile.exists() << 'n';
+//    qDebug() << alarmSoundFile.absolutePath() << 'n';
+//    alarmTone.(alarmSoundFile.absolutePath());
+//    effect.play();
 }
-
-//void ArduinoInterface::initialiseDatalogger(int deviceID) {
-//    //Create a date/timestamp to avoid overwriting old logs
-//    QDate systemDate = QDate::currentDate();
-//    QTime systemTime = QTime::currentTime();
-//    QString dateTimeStr = "";
-
-//    //Append YYYYMMDD to date/timestamp
-//    dateTimeStr.append(QString::number(systemDate.year()));
-//    dateTimeStr.append((systemDate.month() < 10) ? "0" : "");
-//    dateTimeStr.append(QString::number(systemDate.month()));
-//    dateTimeStr.append((systemDate.day() < 10) ? "0" : "");
-//    dateTimeStr.append(QString::number(systemDate.day()));
-//    dateTimeStr.append(";");
-
-//    //Append hhmmss to date/timestamp
-//    dateTimeStr.append((systemTime.hour() < 10) ? "0" : "");
-//    dateTimeStr.append(QString::number(systemTime.hour()));
-//    dateTimeStr.append((systemTime.minute() < 10) ? "0" : "");
-//    dateTimeStr.append(QString::number(systemTime.minute()));
-//    dateTimeStr.append((systemTime.second() < 10) ? "0" : "");
-//    dateTimeStr.append(QString::number(systemTime.second()));
-//    dateTimeStr.append(";");
-
-//    //Open a datalogging file
-//   datalogs[deviceID].setFileName((dateTimeStr + "_satellite_" + QString::number(deviceID) + "_datalog.txt"));
-//   if (!datalogs[deviceID].open(QIODevice::WriteOnly | QIODevice::Append | QFile::Text)) {
-//       //Do some error stuff
-//       qDebug() << "Error opening file for writing.\n";
-//       /*std::cerr << "Cannot open file for writing: "
-//                 << qPrintable(file.errorString()) << std::endl;
-//       */
-//   }
-
-//   //Set up an associated Datalogger
-//   logger[deviceID].setDatalog(&datalogs[deviceID]);
-
-//}
 
 void ArduinoInterface::run() {
 
@@ -112,6 +80,8 @@ void ArduinoInterface::parseTransmission(QString datastring) {
             parseTransmission(datastring); // Recursive parse in case of backed-up transmissions.
         }
     }
+
+
 }
 
 void ArduinoInterface::parseValuesToSatellite(QString datastring) {
@@ -178,24 +148,4 @@ void ArduinoInterface::parseValuesToSatellite(QString datastring) {
 
     // Push new values to satellite
     fieldDevice[deviceID].updateValues(secondsElapsed, temperature, humidity);
-
-//    if (validDatastring) {
-
-//        //Check if file needs to be created
-//        if (!logger[deviceID].isInitialised()) {
-//            initialiseDatalogger(deviceID);
-//        }
-
-//        if (abs(temperature - climateData[deviceID].temperature.getValue()) > TEMPHYSTERESIS || abs(humidity - climateData[deviceID].humidity.getValue()) > HUMHYSTERESIS) {
-//            //Update recorded values
-//            climateData[deviceID].temperature.setValue(temperature);
-//            climateData[deviceID].humidity.setValue(humidity);
-//            climateData[deviceID].lastUpdated = secondsElapsed;
-
-//            //Write the new record to the associated .txt
-//            logger[deviceID].log(climateData[deviceID]);
-//        }
-//    }
-
-
 }

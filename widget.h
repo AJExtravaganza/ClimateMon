@@ -8,13 +8,13 @@ namespace Ui {
 class Widget;
 }
 
-class Widget : public QWidget
+class CliMonWindow : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit Widget(QWidget *parent = 0);
-    ~Widget();
+    explicit CliMonWindow(QWidget *parent = 0);
+    ~CliMonWindow();
     ArduinoInterface baseDeviceInterface; //Maybe should be private
 
 private:
