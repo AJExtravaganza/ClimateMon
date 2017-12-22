@@ -13,16 +13,12 @@ using std::endl;
 
 ArduinoInterface::ArduinoInterface() : alarmToneFile("alarmshort.wav"), alarmTone(alarmToneFile.absolutePath())
 {
+    alarmTone.setLoops(alarmTone.Infinite);
+
     for (int i = 1; i < DEVICECOUNT; i++) {
         fieldDevice[i].setDeviceID(i);
         fieldDevice[i].deviceStatus.setValue(true);
     }
-
-//    QDir alarmSoundFile("alarmshort.wav");
-//    qDebug() << alarmSoundFile.exists() << 'n';
-//    qDebug() << alarmSoundFile.absolutePath() << 'n';
-//    alarmTone.(alarmSoundFile.absolutePath());
-//    effect.play();
 }
 
 void ArduinoInterface::run() {
@@ -57,6 +53,12 @@ void ArduinoInterface::run() {
       }
 }
 
+//void ArduinoInterface::clearAlarms() {
+//    for (int i = 1; i < DEVICECOUNT; i++) {
+//        fieldDevice[i].clearAlarms();
+//    }
+//}
+
 void ArduinoInterface::parseTransmission(QString datastring) {
     if (datastring.left(1) == ">" && datastring.mid(4,1) == ";") {
         QString txType = datastring.mid(1,3); //Read three-letter tx code and semicolon
@@ -70,6 +72,12 @@ void ArduinoInterface::parseTransmission(QString datastring) {
             bool status = (datastring.left(1) == "1") ? true : false;
             qDebug() << "Setting device status to " << status << "\n";
             fieldDevice[deviceID].deviceStatus.setValue(status);
+        }
+        else if (txType == "ALM") {
+            int deviceID = datastring.left(1).toInt();
+            datastring.remove(0,2);
+            // IMPLEMENT TIME TRACKING FOR ALARMS
+            fieldDevice[deviceID].deviceStatus.throwAlarm();
         }
 
         while (!datastring.isEmpty() && datastring.left(1) != ">") {

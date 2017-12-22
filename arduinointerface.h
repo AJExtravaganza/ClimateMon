@@ -20,6 +20,7 @@ public:
     QSound alarmTone;
     ArduinoInterface();
     void run(); //Initiates serial comms on a loop (thread)
+    //void clearAlarms(); //Implement later, may need to make ArdInt a QObject, but is this compatible with thread?
 };
 
 #endif // ARDUINOINTERFACE_H

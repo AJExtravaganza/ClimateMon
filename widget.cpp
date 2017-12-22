@@ -10,6 +10,7 @@ CliMonWindow::CliMonWindow(QWidget *parent) :
 
     baseDeviceInterface.start();
 
+    //Temp/hum readout updates
     QObject::connect(&baseDeviceInterface.fieldDevice[1].climateData.temperature, SIGNAL(valueChanged(QString)), ui->sat1Temperature, SLOT(display(QString)));
     QObject::connect(&baseDeviceInterface.fieldDevice[1].climateData.humidity, SIGNAL(valueChanged(QString)), ui->sat1Humidity, SLOT(display(QString)));
     QObject::connect(&baseDeviceInterface.fieldDevice[2].climateData.temperature, SIGNAL(valueChanged(QString)), ui->sat2Temperature, SLOT(display(QString)));
@@ -17,9 +18,17 @@ CliMonWindow::CliMonWindow(QWidget *parent) :
     QObject::connect(&baseDeviceInterface.fieldDevice[3].climateData.temperature, SIGNAL(valueChanged(QString)), ui->sat1Temperature, SLOT(display(QString)));
     QObject::connect(&baseDeviceInterface.fieldDevice[3].climateData.humidity, SIGNAL(valueChanged(QString)), ui->sat3Humidity, SLOT(display(QString)));
 
+    //Comms status label updates
     QObject::connect(&baseDeviceInterface.fieldDevice[1].deviceStatus, SIGNAL(valueChanged(QString)), ui->SatStatus_1, SLOT(setText(QString)));
     QObject::connect(&baseDeviceInterface.fieldDevice[2].deviceStatus, SIGNAL(valueChanged(QString)), ui->SatStatus_2, SLOT(setText(QString)));
     QObject::connect(&baseDeviceInterface.fieldDevice[3].deviceStatus, SIGNAL(valueChanged(QString)), ui->SatStatus_3, SLOT(setText(QString)));
+
+    //Alarm tone triggers
+    QObject::connect(&baseDeviceInterface.fieldDevice[1].deviceStatus, SIGNAL(alarmActivated()), &baseDeviceInterface.alarmTone, SLOT(play()));
+    //implement others later
+
+    //Alarm mute pushbutton
+    QObject::connect(ui->alarmMutePB, SIGNAL(clicked(bool)), &baseDeviceInterface.alarmTone, SLOT(stop()));
    }
 
 CliMonWindow::~CliMonWindow()

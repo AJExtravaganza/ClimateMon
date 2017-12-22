@@ -25,6 +25,7 @@ public:
     Satellite(int deviceID);
     void setDeviceID(int deviceID);
     void updateValues(unsigned long int secondsElapsed, int temperature, int humidity);
+    void clearAlarms();
 };
 
 #endif // SATELLITE_H

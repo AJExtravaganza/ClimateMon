@@ -27,6 +27,10 @@ void Satellite::setDeviceID(int deviceID) {
     Satellite::deviceID = deviceID;
 }
 
+void Satellite::clearAlarms() {
+    deviceStatus.clearAlarm();
+}
+
 
 void Satellite::initialiseDatalogger() {
     //Create a date/timestamp to avoid overwriting old logs
