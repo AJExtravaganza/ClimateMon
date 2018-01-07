@@ -100,8 +100,10 @@ void ArduinoInterface::parseValuesToSatellite(QString datastring) {
     QString secondsElapseStr = "";
     int deviceID = 0;
     unsigned long int secondsElapsed = 0;
-    int temperature = 0;
-    int humidity = 0;
+    int temperature_0 = 0;
+    int humidity_0 = 0;
+    int temperature_1 = 0;
+    int humidity_1 = 0;
 
     // Parse deviceID
     if (datastring.length() != 0) {
@@ -131,9 +133,9 @@ void ArduinoInterface::parseValuesToSatellite(QString datastring) {
         validDatastring = false;
     }
 
-    // Parse temperature
+    // Parse temperature_0
     if (datastring.length() != 0) {
-        temperature = datastring.left(3).toInt(); //Should always be 3 digits in practice
+        temperature_0 = datastring.left(3).toInt(); //Should always be 3 digits in practice
         datastring.remove(0,3);
     }
 
@@ -144,9 +146,9 @@ void ArduinoInterface::parseValuesToSatellite(QString datastring) {
         validDatastring = false;
     }
 
-    // Parse humidity
+    // Parse humidity_0
     if (datastring.length() != 0) {
-        humidity = datastring.left(3).toInt(); //Should always be 3 digits in practice
+        humidity_0 = datastring.left(3).toInt(); //Should always be 3 digits in practice
         datastring.remove(0,3);
     }
 
@@ -155,8 +157,21 @@ void ArduinoInterface::parseValuesToSatellite(QString datastring) {
     }
     else {
         validDatastring = false;
+    }
+
+    if (datastring.length() != 0 && datastring.mid(3, 1) == ";" && datastring.mid(7, 1) == ";") {
+        temperature_1 = datastring.left(3).toInt(); //Should always be 3 digits in practice
+        datastring.remove(0,4); //todo do a cleaner check later.  perhaps transmissions should have a termination character.
+
+        humidity_1 = datastring.left(3).toInt(); //Should always be 3 digits in practice
+        datastring.remove(0,4);
     }
 
     // Push new values to satellite
-    fieldDevice[deviceID].updateValues(secondsElapsed, temperature, humidity);
+    if (temperature_1 && humidity_1) {
+        fieldDevice[deviceID].updateValues(secondsElapsed, temperature_0, humidity_0, temperature_1, humidity_1);
+    }
+    else {
+        fieldDevice[deviceID].updateValues(secondsElapsed, temperature_0, humidity_0);
+    }
 }
