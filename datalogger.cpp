@@ -33,13 +33,26 @@ QString Datalogger::generateRecord(SatelliteDatum &datum) {
     record.append(QString::number(datum.lastUpdated));
     record.append(";");
 
-    //Temperature field °C
-    record.append(datum.temperature.getValueAsStr());
+    //Sensor 0 Temperature °C
+    record.append(datum.temperature[0].getValueAsStr());
     record.append(";");
 
-    //Relative humidity %RH
-    record.append(datum.humidity.getValueAsStr());
+    //Sensor 0 Relative humidity %RH
+    record.append(datum.humidity[0].getValueAsStr());
     record.append(";");
+
+    //If there is a second sensor, append its values too.
+    //Sensor is present if values are non-default (ie != -1)
+    if (datum.temperature[1].getValue() != -1 && datum.humidity[1].getValue() != -1) {
+
+        //Sensor 1 Temperature °C
+        record.append(datum.temperature[1].getValueAsStr());
+        record.append(";");
+
+        //Sensor 1 Relative humidity %RH
+        record.append(datum.humidity[1].getValueAsStr());
+        record.append(";");
+    }
 
     //EoL
     record.append("\n");

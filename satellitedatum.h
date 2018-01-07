@@ -11,8 +11,8 @@ class SatelliteDatum : public QObject //Figure out later whether this really nee
 public:
     explicit SatelliteDatum(QObject *parent = nullptr);
     unsigned long int lastUpdated; //seconds elapsed since base station powered on.  Useful for graphing vs time.
-    ProcessValue temperature;
-    ProcessValue humidity;
+    ProcessValue temperature[2];
+    ProcessValue humidity[2];
 
 signals:
 

@@ -70,25 +70,49 @@ void Satellite::initialiseDatalogger() {
 
 }
 
-
-
 void Satellite::updateValues(unsigned long int secondsElapsed, int temperature, int humidity) {
 
-        //Check if file needs to be created
-        if (!logger.isInitialised()) {
-            initialiseDatalogger();
-        }
+    //Check if file needs to be created
+    if (!logger.isInitialised()) {
+        initialiseDatalogger();
+    }
 
-        //// TODO: ADD CHECK FOR PRECIPITOUS DROP AND WRITE RECORD IF EXISTS FOR QUALITY GRAPHING
+    //// TODO: ADD CHECK FOR PRECIPITOUS DROP AND WRITE RECORD IF EXISTS FOR QUALITY GRAPHING
 
-        if (abs(temperature - climateData.temperature.getValue()) > TEMPHYSTERESIS || abs(humidity - climateData.humidity.getValue()) > HUMHYSTERESIS) {
-            //Update recorded values
-            climateData.temperature.setValue(temperature);
-            climateData.humidity.setValue(humidity);
-            climateData.lastUpdated = secondsElapsed;
+    if (abs(temperature - climateData.temperature[0].getValue()) > TEMPHYSTERESIS ||
+        abs(humidity - climateData.humidity[0].getValue()) > HUMHYSTERESIS) {
+        //Update recorded values
+        climateData.temperature[0].setValue(temperature);
+        climateData.humidity[0].setValue(humidity);
+        climateData.lastUpdated = secondsElapsed;
 
-            //Write the new record to the associated .txt
-            logger.log(climateData);
-        }
-//    }
+        //Write the new record to the associated .txt
+        logger.log(climateData);
+    }
+}
+
+void Satellite::updateValues(unsigned long int secondsElapsed, int temperature_0, int humidity_0, int temperature_1, int humidity_1) {
+
+    //Check if file needs to be created
+    if (!logger.isInitialised()) {
+        initialiseDatalogger();
+    }
+
+    //// TODO: ADD CHECK FOR PRECIPITOUS DROP AND WRITE RECORD IF EXISTS FOR QUALITY GRAPHING
+
+    if (abs(temperature_0 - climateData.temperature[0].getValue()) > TEMPHYSTERESIS ||
+        abs(humidity_0 - climateData.humidity[0].getValue()) > HUMHYSTERESIS ||
+        abs(temperature_1 - climateData.temperature[1].getValue()) > TEMPHYSTERESIS ||
+        abs(humidity_1 - climateData.humidity[1].getValue()) > HUMHYSTERESIS) {
+        //Update recorded values
+
+        climateData.temperature[0].setValue(temperature_0);
+        climateData.humidity[0].setValue(humidity_0);
+        climateData.temperature[1].setValue(temperature_1);
+        climateData.humidity[1].setValue(humidity_1);
+        climateData.lastUpdated = secondsElapsed;
+
+        //Write the new record to the associated .txt
+        logger.log(climateData);
+    }
 }
