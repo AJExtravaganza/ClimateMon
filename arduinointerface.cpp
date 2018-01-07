@@ -75,9 +75,12 @@ void ArduinoInterface::parseTransmission(QString datastring) {
         }
         else if (txType == "ALM") {
             int deviceID = datastring.left(1).toInt();
-            datastring.remove(0,2);
+            QString alarmType = datastring.left(2);
+            datastring.remove(0,3);
+            // IMPLEMENT ALARM TEXT PARSING
             // IMPLEMENT TIME TRACKING FOR ALARMS
-            fieldDevice[deviceID].deviceStatus.throwAlarm();
+            // IMPLEMENT ENUM FOR ALARM TYPES, MAYBE?
+            fieldDevice[deviceID].deviceStatus.throwAlarm(alarmType);
         }
 
         while (!datastring.isEmpty() && datastring.left(1) != ">") {

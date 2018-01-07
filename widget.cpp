@@ -1,6 +1,7 @@
 #include "widget.h"
 #include "ui_widget.h"
 #include <QDebug>
+#include <QPicture>
 
 CliMonWindow::CliMonWindow(QWidget *parent) :
     QWidget(parent),
@@ -25,6 +26,11 @@ CliMonWindow::CliMonWindow(QWidget *parent) :
 
     //Alarm tone triggers
     QObject::connect(&baseDeviceInterface.fieldDevice[1].deviceStatus, SIGNAL(alarmActivated()), &baseDeviceInterface.alarmTone, SLOT(play()));
+    //implement others later
+
+    //Alarm visual notification triggers
+
+    QObject::connect(&baseDeviceInterface.fieldDevice[1].deviceStatus, SIGNAL(commsAlarmActivated(QPicture)), ui->AlarmIndicator_1, SLOT(setPicture(QPicture)));
     //implement others later
 
     //Alarm mute pushbutton

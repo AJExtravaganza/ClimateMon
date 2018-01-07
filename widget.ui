@@ -307,6 +307,19 @@
     <string>Clear Alarms</string>
    </property>
   </widget>
+  <widget class="QLabel" name="AlarmIndicator_1">
+   <property name="geometry">
+    <rect>
+     <x>40</x>
+     <y>240</y>
+     <width>47</width>
+     <height>13</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>BLANK</string>
+   </property>
+  </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources/>

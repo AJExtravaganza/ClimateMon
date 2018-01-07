@@ -28,7 +28,7 @@ void Satellite::setDeviceID(int deviceID) {
 }
 
 void Satellite::clearAlarms() {
-    deviceStatus.clearAlarm();
+    deviceStatus.clearAlarms();
 }
 
 
@@ -70,123 +70,9 @@ void Satellite::initialiseDatalogger() {
 
 }
 
-//void Satellite::run() {
 
-//    /*Portname must contain these backslashes, and remember to
-//    replace the following com port*/
-//    QString port_name = "\\\\.\\COM4";
-
-//    //String for incoming data
-//    char incomingData[MAX_DATA_LENGTH];
-//    QString dataString = "";
-
-//    SerialPort arduino(port_name);
-//      if (arduino.isConnected()) {
-//          qDebug() << "Connection Established" << endl;
-//      }
-//      else {
-//          qDebug() << "ERROR, check port name";
-//      }
-
-//      while (arduino.isConnected()){
-//        //Check if data has been read or not
-//        int bytes_read = arduino.readSerialPort(incomingData, MAX_DATA_LENGTH);
-//        //prints out data
-//            if (bytes_read) {
-//                dataString = static_cast<QString>(incomingData).left(bytes_read);
-//                qDebug() << dataString;
-//                parse(dataString);
-//            }
-//        //wait a bit
-//        Sleep(10);
-//      }
-//}
-
-//void Satellite::parse(QString datastring) {
-//    if (datastring.left(1) == ">" && datastring.mid(4,1) == ";") {
-//        QString txType = datastring.mid(1,3); //Read three-letter tx code and semicolon
-//        datastring.remove(0,5);
-//        if (txType == "DAT") {
-//            updateValues(datastring);
-//        }
-//        else if (txType == "STS") {
-//            int deviceID = datastring.left(1).toInt();
-//            datastring.remove(0,2);
-//            bool status = (datastring.left(1) == "1") ? true : false;
-//            qDebug() << "Setting device status to " << status << "\n";
-//            deviceStatus[deviceID].setValue(status);
-//        }
-
-//        while (!datastring.isEmpty() && datastring.left(1) != ">") {
-//            datastring.remove(0,1);
-//        }
-
-//        if (!datastring.isEmpty()) {
-//            parse(datastring); // Recursive parse in case of backed-up transmissions.
-//        }
-//    }
-//}
 
 void Satellite::updateValues(unsigned long int secondsElapsed, int temperature, int humidity) {
-
-//    QString timestampStr = "";
-
-//    // Parse deviceID
-//    if (datastring.length() != 0) {
-//        deviceID = datastring.left(1).toInt();
-//        datastring.remove(0,1);
-//    }
-
-//    if (datastring.left(1) == ";") {
-//        datastring.remove(0,1);
-//    }
-//    else {
-//        validDatastring = false;
-//    }
-
-//    // Parse numeric secondsElapsed
-//    while (datastring.length() != 0 && !datastring.startsWith(";") /*change to ISNUMERIC*/) {
-//        timestampStr.append(datastring.left(1));
-//        datastring.remove(0,1);
-//    }
-
-//    secondsElapsed = static_cast<unsigned long int>(timestampStr.toInt());
-
-//    if (datastring.left(1) == ";") {
-//        datastring.remove(0,1);
-//    }
-//    else {
-//        validDatastring = false;
-//    }
-
-//    // Parse temperature
-//    if (datastring.length() != 0) {
-//        temperature = datastring.left(3).toInt(); //Should always be 3 digits in practice
-//        datastring.remove(0,3);
-//    }
-
-//    if (datastring.left(1) == ";") {
-//        datastring.remove(0,1);
-//    }
-//    else {
-//        validDatastring = false;
-//    }
-
-//    // Parse humidity
-//    if (datastring.length() != 0) {
-//        humidity = datastring.left(3).toInt(); //Should always be 3 digits in practice
-//        datastring.remove(0,3);
-//    }
-
-//    if (datastring.left(1) == ";") {
-//        datastring.remove(0,1);
-//    }
-//    else {
-//        validDatastring = false;
-//    }
-
-//    // Perform update if datastring is valid
-//    if (validDatastring) {
 
         //Check if file needs to be created
         if (!logger.isInitialised()) {

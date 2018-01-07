@@ -1,5 +1,6 @@
 #include "devicestatus.h"
 #include <QDebug>
+#include <QDir>
 
 DeviceStatus::DeviceStatus(QObject *parent) : QObject(parent), value(1)//, touched(false)
 {
@@ -18,7 +19,7 @@ void DeviceStatus::setValue(bool value) {
 
     DeviceStatus::value = value;
     if (!value) {
-        throwAlarm();
+        throwAlarm("DN");
     }
 
     // Updates dont occur often enough to pose a performance concern, and updating each time is cleaner than messy conditionals
@@ -30,12 +31,41 @@ void DeviceStatus::setAlarm(bool alarmStatus) {
     inAlarm = alarmStatus;
 }
 
-void DeviceStatus::throwAlarm() {
+void DeviceStatus::throwAlarm(QString alarmType) {
+    //loads alarm indicator image
+    QDir alarmLEDFile("alarmLED.png");
+    QPicture alarmLEDPicture;
+    alarmLEDPicture.load(alarmLEDFile.absolutePath(), "png");
+
+    if (alarmType == "DN") {
+        commsAlarm = true;
+        emit commsAlarmActivated(alarmLEDPicture);
+    }
+    else if (alarmType == "LT") {
+        tempAlarm = true;
+        emit tempAlarmActivated(alarmLEDPicture);
+    }
+    else if (alarmType == "HT") {
+        tempAlarm = true;
+        emit tempAlarmActivated(alarmLEDPicture);
+    }
+    else if (alarmType == "LH") {
+        humAlarm = true;
+        emit humAlarmActivated(alarmLEDPicture);
+    }
+    else if (alarmType == "HH") {
+        humAlarm = true;
+        emit humAlarmActivated(alarmLEDPicture);
+    }
+
     inAlarm = true;
     emit alarmActivated();
 }
 
-void DeviceStatus::clearAlarm() {
+void DeviceStatus::clearAlarms() {
+    commsAlarm = false;
+    tempAlarm = false;
+    humAlarm = false;
     inAlarm = false;
 }
 
